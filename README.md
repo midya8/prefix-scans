@@ -113,6 +113,20 @@ bash examples/adjoint-demo.sh
   preserve the causal streaming outputs. A tested descent step reduces the
   fixture loss; no learned-task, language-model or generalization claim.
 
+## Changing dense-state coordinates
+
+One regression test applies 36 exact nonorthogonal coordinate changes across
+empty, single-step and longer two-state models, including singular reset
+transitions. With `h_new = S h`, transitions and their matrix directions become `S A S^-1` and `S dA S^-1`.
+Writes, initial states and their directions transform with `S`; output
+cotangents transform with `S^-T`.
+States and JVPs change with the basis; adjoints and parameter VJPs change as
+covectors. Their scalar derivative pairing stays exactly the same.
+
+This tests coordinate consistency, not the absolute correctness of every
+scan. A wrong calculation can still be coordinate-consistent. The independent
+homogeneous products and full polynomial checks above remain necessary.
+
 ## Tests and input contracts
 
 ```bash
@@ -123,7 +137,7 @@ bash examples/demo.sh
 python examples/render_demo.py --check
 ```
 
-63 tests (30 original, 16 exact-diagonal derivative and 17 dense-state) include 729 scalar affine associativity cases, 264 length/width cases
+64 tests (30 original, 16 exact-diagonal derivative and 18 dense-state) include 729 scalar affine associativity cases, 264 length/width cases
 against a closed-form expansion, 120 LTI models, full DAG scope/dependency/count
 checks, every length through 128 for work/span bounds, 123 independent gradient
 probes, 64 streaming partitions, strict input errors and both real failure
