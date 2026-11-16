@@ -44,7 +44,8 @@ homogeneous-product length/width cases, 672 independently polynomial-checked
 parameter coordinates across 36 models, 24 full directional models, 216
 associativity cases and every DAG length through 32 support this extension.
 The dense path is bounded to length 32 and width 4; the earlier diagonal and
-diagonal-HVP paths remain unchanged. This is not a dense-HVP implementation.
+diagonal-HVP paths remain unchanged. That original dense audit does not compute Hessian-vector products. The separate
+[curvature extension](CURVATURE.md) below adds them with sequential recurrences.
 
 ```bash
 python -m scanlab dense-demo
@@ -137,13 +138,15 @@ bash examples/demo.sh
 python examples/render_demo.py --check
 ```
 
-64 tests (30 original, 16 exact-diagonal derivative and 18 dense-state) include 729 scalar affine associativity cases, 264 length/width cases
+71 tests (30 original, 16 exact-diagonal derivative, 18 dense-state and seven dense-curvature) include 729 scalar affine associativity cases, 264 length/width cases
 against a closed-form expansion, 120 LTI models, full DAG scope/dependency/count
 checks, every length through 128 for work/span bounds, 123 independent gradient
 probes, 64 streaming partitions, strict input errors and both real failure
 controls. The 114-cell figure binds the complete report, including hidden
 intermediate factors, not only headline numbers. Five CI jobs check Python
-3.10-3.13 plus all six commands from an installed nine-module wheel outside checkout.
+3.10-3.13 plus all seven complete commands from an installed ten-module wheel outside checkout.
+The package job also runs the entire test suite outside checkout and checks
+every package origin before and after.
 The 68-cell adjoint SVG binds every shown value and embeds all five full scan
 DAGs; the original 114-cell figure is unchanged.
 
@@ -176,3 +179,16 @@ It is **not Mamba, S4, a GPU kernel, a trained sequence benchmark, an exact
 floating reduction, or a new scan algorithm**. It uses a simple input-sigmoid
 gate, not Mamba's input-dependent continuous-time discretization or full block.
 MIT licensed.
+
+## Dense squared-loss Hessian-vector products
+
+`curvature_audit(pairs, initial, direction, targets)` adds exact forward-over-reverse derivatives for the dense recurrence's fixed-target squared state loss. It keeps state tangents, second directional states, loss adjoints, their tangents and every parameter gradient/HVP entry, including both outer-product terms and the initial-state boundary term. No dense Hessian is constructed. This module runs sequentially and adds no parallel-span or timing claim.
+
+A squared loss can still have negative curvature in the joint recurrence parameters. A one-step control with zero matrix and initial state, target one and direction one in both parameters has zero state JVP but loss second derivative `-2`. A Gauss-Newton-only calculation would miss it.
+
+```bash
+python -m scanlab curvature examples/curvature-input.json
+python examples/verify_wheel.py
+```
+
+Seven new tests include all 672 parameter coordinates across 36 independently expanded bivariate-polynomial models, 24 full directional models and 24 Hessian symmetry checks. The full 71-test source and installed suites retain the six original complete JSON outputs and all three original figures unchanged. [Equations, exact contract, controls and limits](CURVATURE.md).
