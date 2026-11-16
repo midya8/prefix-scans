@@ -4,9 +4,10 @@ from .exact import audit,jsonify
 from .demo import demo
 from .adjoint import derivative_audit,demo as adjoint_demo
 from .dense import audit as dense_audit,demo as dense_demo
+from .curvature import curvature_audit
 
 def main(argv=None):
-    p=argparse.ArgumentParser(description='Exact affine scan and small gated state-space audit');p.add_argument('mode',choices=('demo','audit','adjoint-demo','adjoint','dense-demo','dense'));p.add_argument('input',nargs='?');a=p.parse_args(argv)
+    p=argparse.ArgumentParser(description='Exact affine scan and small gated state-space audit');p.add_argument('mode',choices=('demo','audit','adjoint-demo','adjoint','dense-demo','dense','curvature'));p.add_argument('input',nargs='?');a=p.parse_args(argv)
     try:
         if a.mode in ('demo','adjoint-demo','dense-demo'):
             if a.input:raise ValueError('demo takes no input')
@@ -22,9 +23,9 @@ def main(argv=None):
                     d[k]=v
                 return d
             data=json.loads(raw,object_pairs_hook=pairs,parse_constant=lambda x:(_ for _ in ()).throw(ValueError('nonfinite JSON')))
-            expected={'pairs','initial'} if a.mode=='audit' else {'pairs','initial','cotangents','direction'} if a.mode=='dense' else {'pairs','initial','cotangents','direction','targets'}
+            expected={'pairs','initial'} if a.mode=='audit' else {'pairs','initial','cotangents','direction'} if a.mode=='dense' else {'pairs','initial','direction','targets'} if a.mode=='curvature' else {'pairs','initial','cotangents','direction','targets'}
             if not isinstance(data,dict)or set(data)!=expected:raise ValueError('input keys mismatch')
-            r=audit(data['pairs'],data['initial']) if a.mode=='audit' else dense_audit(**data) if a.mode=='dense' else derivative_audit(**data)
+            r=audit(data['pairs'],data['initial']) if a.mode=='audit' else dense_audit(**data) if a.mode=='dense' else curvature_audit(**data) if a.mode=='curvature' else derivative_audit(**data)
         print(json.dumps(jsonify(r),sort_keys=True,indent=2));return 0
     except (ValueError,TypeError,OSError,UnicodeError)as e:print('error: '+str(e),file=sys.stderr);return 2
 
