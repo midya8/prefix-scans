@@ -1,4 +1,4 @@
-# ScanLab
+# Prefix scans
 
 ScanLab compares sequential state updates with associative prefix scans. It
 returns exact rational states, dependency graphs, arithmetic counts and
@@ -8,6 +8,9 @@ It uses only Python's standard library.
 
 These are inspectable reference calculations, not a trained sequence model or
 a speed benchmark. Every operation runs serially in Python.
+
+The repository is now `prefix-scans`. The Python import and CLI names stay
+`scanlab` for compatibility with existing scripts.
 
 ## Commands
 
