@@ -1,6 +1,6 @@
 # Prefix scans
 
-ScanLab compares sequential state updates with associative prefix scans. It
+This implementation compares sequential state updates with associative prefix scans. It
 returns exact rational states, dependency graphs, arithmetic counts and
 derivative checks for diagonal and small full-matrix recurrences. A separate
 floating-point model shows input gating, streaming and rounding failures.
