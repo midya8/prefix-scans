@@ -25,7 +25,7 @@ The repository is now `prefix-scans`. The Python import and CLI names stay
 
 ## Coupled dense states
 
-![Coupled states, full matrix gradients and real dense work](https://raw.githubusercontent.com/midya8/scanlab/1e6f1f4edc06d38b6babd203281c1efb836965b7/assets/dense-audit.svg)
+![Coupled states, full matrix gradients and real dense work](https://raw.githubusercontent.com/midya8/prefix-scans/1e6f1f4edc06d38b6babd203281c1efb836965b7/assets/dense-audit.svg)
 
 The exact full-matrix path mixes state coordinates rather than assuming
 diagonal dynamics. Noncommuting affine composition, singular reset steps,
@@ -58,7 +58,7 @@ bash examples/dense-demo.sh
 
 ## Exact reverse scans and curvature
 
-![Exact reverse scan, transposition and Hessian-vector certificates](https://raw.githubusercontent.com/midya8/scanlab/f30336e029fc595a9c2b6b2b60de44c85c48bc18/assets/adjoint-audit.svg)
+![Exact reverse scan, transposition and Hessian-vector certificates](https://raw.githubusercontent.com/midya8/prefix-scans/f30336e029fc595a9c2b6b2b60de44c85c48bc18/assets/adjoint-audit.svg)
 
 The exact diagonal path differentiates the supplied diagonal affine pairs, separately
 from the float gated model below. Shifted-decay reverse scans return every
@@ -88,7 +88,7 @@ python -m scanlab adjoint examples/adjoint-input.json
 bash examples/adjoint-demo.sh
 ```
 
-![Exact algebra, actual work, floating failure and gradients](https://raw.githubusercontent.com/midya8/scanlab/42355326cba179c5af1e8225192162918eac532c/assets/scan-audit.svg)
+![Exact algebra, actual work, floating failure and gradients](https://raw.githubusercontent.com/midya8/prefix-scans/42355326cba179c5af1e8225192162918eac532c/assets/scan-audit.svg)
 
 ## What the comparisons show
 
